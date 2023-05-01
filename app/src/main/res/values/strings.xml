@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Story App</string>
+
+
+    <string name="logout">Logout</string>
+
+
+    <string name="get_started">Mulai</string>
+    <string name="selamat_datang">Selamat Datang</string>
+
+    <string name="or">OR</string>
+
+    <!--    story-->
+    <string name="username_story">Username</string>
+    <string name="desc_story">Description</string>
+    <string name="content_desc_story">Story Picture</string>
+    <string name="not_found_story">Not Found Story</string>
+
+    <!--    nama-->
+    <string name="hint_nama">Nama</string>
+
+    <!--    login-->
+    <string name="btn_login">Masuk</string>
+
+
+    <!--    register-->
+    <string name="btn_register">Daftar</string>
+
+    <!--    email-->
+    <string name="hint_email">Masukkan Email Anda</string>
+    <string name="input_email_valid">Masukkan Email Valid</string>
+    <string name="email_kosong">Email tidak boleh kosong</string>
+
+    <!--    password-->
+    <string name="error_password">Password harus 6 karakter</string>
+    <string name="hint_password">Masukkan password Anda</string>
+
+    <!--    menu corousel-->
+    <string name="menu_1">Abadikan setiap langkah dan kegiatan yang telah kamu lakukan dalam sebuah foto</string>
+    <string name="menu_2">Bagikan pengalaman anda kepada orang banyak</string>
+    <string name="menu_3">Tangkap semua Momen sebanyak banyaknya</string>
+    <string name="menu_4">Lest Goo.. Mari kita mulai membagikan kenangan dan momen yang telah kita buat</string>
+    <string name="title_activity_add_story">AddStoryActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+</resources>
