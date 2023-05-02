@@ -1,29 +1,21 @@
 package com.example.storyapp.view.main
 
 import StoryAdapter
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storyapp.R
 
-import com.example.storyapp.apihelper.ApiConfig
-import com.example.storyapp.data.AllStoryResponse
 import com.example.storyapp.databinding.ActivityMainBinding
 import com.example.storyapp.utils.SesionManager
 import com.example.storyapp.view.addstory.AddStoryActivity
 import com.example.storyapp.view.login.LoginActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         sharedPref = SesionManager(this)
         token = sharedPref.getToken
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         binding.rvStories.layoutManager = LinearLayoutManager(this)
         binding.rvStories.setHasFixedSize(true)

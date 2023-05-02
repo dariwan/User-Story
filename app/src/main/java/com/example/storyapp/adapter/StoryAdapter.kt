@@ -41,13 +41,13 @@ class StoryAdapter(
             with(binding) {
                 val name = story.name
                 tvUserName.text = buildString {
-                    append("Nama: ")
+                    append("Nama : ")
                     append(name)
                 }
 
                 val desc = story.description
                 tvCaption.text = buildString {
-                    append("Desc: ")
+                    append("Desc : ")
                     append(desc)
                 }
 

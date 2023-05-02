@@ -1,6 +1,5 @@
 package com.example.storyapp.view.main
 
-import StoryAdapter
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

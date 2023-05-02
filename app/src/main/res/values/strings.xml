@@ -4,6 +4,9 @@
 
     <string name="logout">Logout</string>
 
+    <string name="to_galeri">Galeri</string>
+    <string name="to_camera">Camera</string>
+    <string name="to_upload">Upload</string>
 
     <string name="get_started">Mulai</string>
     <string name="selamat_datang">Selamat Datang</string>

@@ -2,7 +2,6 @@ package com.example.storyapp.view.customview
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat

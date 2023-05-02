@@ -1,5 +1,6 @@
 package com.example.storyapp.apihelper
 
+import com.example.storyapp.data.AddStoryResponse
 import com.example.storyapp.data.AllStoryResponse
 import com.example.storyapp.data.LoginResponse
 import com.example.storyapp.data.RegisterResponse
@@ -29,5 +30,13 @@ interface ApiService {
     fun allStory(
         @Header("Authorization") token: String
     ): Call<AllStoryResponse>
+
+    @Multipart
+    @POST("stories")
+    fun addNewStory(
+        @Header("Authorization") token: String,
+        @Part file: MultipartBody.Part,
+        @Part("description") description: RequestBody,
+    ): Call<AddStoryResponse>
 
 }

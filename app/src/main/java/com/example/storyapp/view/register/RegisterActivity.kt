@@ -3,38 +3,48 @@ package com.example.storyapp.view.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.example.storyapp.R
-import com.example.storyapp.apihelper.ApiConfig
-import com.example.storyapp.data.RegisterResponse
+import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.databinding.ActivityRegisterBinding
 import com.example.storyapp.view.login.LoginActivity
-import com.example.storyapp.view.main.MainActivity
-import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 
 class RegisterActivity : AppCompatActivity() {
 
-
-
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var registerViewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        registerViewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
+
         supportActionBar!!.hide()
 
         binding.btnToLogin.setOnClickListener { toLogin() }
 
         binding.btnRegister.setOnClickListener { checkRegister() }
+
+        registerViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
+        registerViewModel.regisResut.observe(this){
+            Toast.makeText(this@RegisterActivity, it, Toast.LENGTH_SHORT).show()
+            if (it == "User created") {
+                val i = Intent(this@RegisterActivity, LoginActivity::class.java)
+                i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(i)
+            }
+        }
+
+
     }
+
 
     private fun toLogin() {
         val i = Intent(this, LoginActivity::class.java)
@@ -55,44 +65,9 @@ class RegisterActivity : AppCompatActivity() {
         } else if (password.isEmpty()) {
             binding.petPassword.requestFocus()
         } else {
-            sendAPI(name, email, password)
+            showLoading(true)
+            registerViewModel.registerUser(name, email, password)
         }
-    }
-
-    private fun sendAPI(name: String, email: String, password: String) {
-        showLoading(true)
-        val apiService = ApiConfig.getApiService().register(name, email, password)
-        apiService.enqueue(object : Callback<RegisterResponse> {
-            override fun onResponse(
-                call: Call<RegisterResponse>,
-                response: Response<RegisterResponse>
-            ) {
-                showLoading(false)
-                if (response.isSuccessful) {
-                    val i = Intent(this@RegisterActivity, MainActivity::class.java)
-                    i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(i)
-                    Toast.makeText(
-                        this@RegisterActivity,
-                        response.body()?.message,
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                } else {
-                    val loginFailed = Gson().fromJson(
-                        response.errorBody()?.charStream(),
-                        RegisterResponse::class.java
-                    )
-                    Toast.makeText(this@RegisterActivity, loginFailed.message, Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-
-            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                showLoading(false)
-                Log.e(TAG, "onFailure: " + t.message)
-            }
-        })
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -101,9 +76,5 @@ class RegisterActivity : AppCompatActivity() {
         } else {
             binding.progressBar.visibility = View.GONE
         }
-    }
-
-    companion object {
-        private const val TAG = "RegisterActivity"
     }
 }

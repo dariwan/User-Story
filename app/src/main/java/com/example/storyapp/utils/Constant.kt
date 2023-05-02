@@ -7,7 +7,6 @@ object Constant {
     const val KEY_TOKEN = "key_token"
     const val KEY_USER_ID = "key_user_id"
     const val KEY_NAME = "key_name"
-    const val KEY_EMAIL = "key_email"
 
     const val BUNDLE_STORY = "bundle_story"
 }
