@@ -33,13 +33,12 @@ class PasswordEditText: AppCompatEditText{
             }
 
             override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
-                if(!text.isNullOrBlank()){
-                    //jika isian <= 6 maka error
-                    error = if (text!!.length <= 6){
-                        resources.getString(R.string.error_password)
-                    }else{
-                        null
-                    }
+                val password = p0.toString()
+                when {
+                    password.isEmpty() -> error =
+                        context.getString(R.string.password_not_be_empty)
+                    password.length < 8 -> error =
+                        context.getString(R.string.password_less_6)
                 }
             }
 

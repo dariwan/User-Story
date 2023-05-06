@@ -59,9 +59,9 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.petPassword.text.toString()
 
         if (email.isEmpty()) {
-            binding.eetEmail.requestFocus()
+            binding.eetEmail.error.isNullOrEmpty()
         } else if (password.isEmpty()) {
-            binding.petPassword.requestFocus()
+            binding.petPassword.error.isNullOrEmpty()
         } else {
             loginViewModel.loginUser(email, password)
             observeLoginResult()

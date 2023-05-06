@@ -1,6 +1,7 @@
 package com.example.storyapp.view.main
 
 import StoryAdapter
+import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -87,5 +88,9 @@ class MainActivity : AppCompatActivity() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    companion object {
+        const val CAMERA_X_RESULT = 200
     }
 }

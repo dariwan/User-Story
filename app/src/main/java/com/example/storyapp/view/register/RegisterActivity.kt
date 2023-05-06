@@ -39,6 +39,8 @@ class RegisterActivity : AppCompatActivity() {
                 val i = Intent(this@RegisterActivity, LoginActivity::class.java)
                 i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(i)
+            } else{
+                Toast.makeText(this@RegisterActivity, it, Toast.LENGTH_SHORT).show()
             }
         }
 
