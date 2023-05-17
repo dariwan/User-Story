@@ -3,10 +3,12 @@
 
 
     <string name="logout">Logout</string>
+    <string name="maps">Maps</string>
 
     <string name="to_galeri">Galeri</string>
     <string name="to_camera">Camera</string>
     <string name="to_upload">Upload</string>
+    <string name="retry">Coba Lagi</string>
 
     <string name="get_started">Mulai</string>
     <string name="selamat_datang">Selamat Datang</string>
@@ -38,7 +40,7 @@
     <string name="error_password">Password harus 8 karakter</string>
     <string name="hint_password">Masukkan password Anda</string>
     <string name="password_not_be_empty">Password Tidak Boleh Kosong</string>
-    <string name="password_less_6">Password Kurang dari 6 Karakter </string>
+    <string name="password_less_8">Password Kurang dari 8 Karakter </string>
 
     <!--    menu corousel-->
     <string name="menu_1">Abadikan setiap langkah dan kegiatan yang telah kamu lakukan dalam sebuah foto</string>
@@ -56,4 +58,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="galery">Galery</string>
+
+    <string name="dark_mode">Dark Mode</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

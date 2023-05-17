@@ -1,49 +1,29 @@
 package com.example.storyapp.view.main
 
-import android.util.Log
+import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.storyapp.apihelper.ApiConfig
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.paging.*
 import com.example.storyapp.data.AllStoryResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.storyapp.injection.Injection
+import com.example.storyapp.repository.StoryRepository
 
-class MainViewModel : ViewModel() {
 
-    private val _allStory = MutableLiveData<ArrayList<AllStoryResponse.ListStory>>()
-    val allStory: LiveData<ArrayList<AllStoryResponse.ListStory>> = _allStory
+class MainViewModel(storyRepository: StoryRepository) : ViewModel() {
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
+    val story: LiveData<PagingData<AllStoryResponse.ListStory>> =
+        storyRepository.getStoryList().cachedIn(viewModelScope)
 
-    fun getAllStory(token: String) {
-        val apiService = ApiConfig.getApiService().allStory(token)
-        apiService.enqueue(object : Callback<AllStoryResponse> {
-            override fun onResponse(
-                call: Call<AllStoryResponse>,
-                response: Response<AllStoryResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        _allStory.value = responseBody.listStory
-                    }else {
-                        _errorMessage.value = "Gagal Mengambil data cerita"
-                    }
-                }
+
+    class ViewModelFactory(private val context: Context): ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java)){
+                return MainViewModel(Injection.provideRepository(context)) as T
             }
-
-            override fun onFailure(call: Call<AllStoryResponse>, t: Throwable) {
-                Log.e(TAG, "onFailure: " + t.message)
-            }
-        })
-    }
-
-
-    companion object {
-        private const val TAG = "MainViewModel"
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
     }
 
 }

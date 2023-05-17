@@ -24,6 +24,7 @@ import android.content.Intent.ACTION_GET_CONTENT
 import com.example.storyapp.apihelper.ApiConfig
 import com.example.storyapp.data.AddStoryResponse
 import com.example.storyapp.utils.SesionManager
+import com.example.storyapp.utils.reduceFileImage
 import com.example.storyapp.utils.uriToFile
 import com.example.storyapp.view.camera.CameraActivity
 import com.example.storyapp.view.main.MainActivity
@@ -138,7 +139,7 @@ class AddStoryActivity : AppCompatActivity() {
     private fun uploadImage() {
         val desc = binding.etDesc.text.toString()
         if (getFile != null) {
-            val file = getFile as File
+            val file = reduceFileImage(getFile as File)
 
             val description = desc.toRequestBody("text/plain".toMediaType())
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaType())

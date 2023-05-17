@@ -34,13 +34,13 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         registerViewModel.regisResut.observe(this){
-            Toast.makeText(this@RegisterActivity, it, Toast.LENGTH_SHORT).show()
             if (it == "User created") {
                 val i = Intent(this@RegisterActivity, LoginActivity::class.java)
                 i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(i)
+                showToast()
             } else{
-                Toast.makeText(this@RegisterActivity, it, Toast.LENGTH_SHORT).show()
+                showToast()
             }
         }
 
@@ -60,16 +60,34 @@ class RegisterActivity : AppCompatActivity() {
         val email = binding.eetEmail.text.toString()
         val password = binding.petPassword.text.toString()
 
-        if (name.isEmpty()) {
-            binding.netName.requestFocus()
-        } else if (email.isEmpty()) {
-            binding.eetEmail.requestFocus()
-        } else if (password.isEmpty()) {
-            binding.petPassword.requestFocus()
-        } else {
+        if (!binding.netName.text.isNullOrEmpty() && !binding.eetEmail.text.isNullOrEmpty() && password.length >= 8){
             showLoading(true)
             registerViewModel.registerUser(name, email, password)
+        } else{
+            Toast.makeText(this, "Password must be 8 character", Toast.LENGTH_SHORT).show()
+            if (binding.netName.text.isNullOrEmpty()){
+                binding.netName.error = "Nama Tidak boleh Kosong"
+            }
+            if (binding.eetEmail.text.isNullOrEmpty()){
+                binding.eetEmail.error = "Email Tidak Boleh Kosong"
+            }
+            if (binding.petPassword.text.isNullOrEmpty()){
+                binding.petPassword.error = "Password must be 8 character"
+            }
         }
+
+//        if (name.isEmpty()) {
+//            binding.netName.requestFocus()
+//        } else if (email.isEmpty()) {
+//            binding.eetEmail.requestFocus()
+//        } else if (password.isEmpty()) {
+//            binding.petPassword.requestFocus()
+//        } else if(password.length < 8 ){
+//            Toast.makeText(this, "Password must be at least 8 characters long", Toast.LENGTH_SHORT).show()
+//        } else {
+//            showLoading(true)
+//            registerViewModel.registerUser(name, email, password)
+//        }
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -77,6 +95,12 @@ class RegisterActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.VISIBLE
         } else {
             binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun showToast(){
+        registerViewModel.regisResut.observe(this){
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
 }

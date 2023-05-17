@@ -58,19 +58,23 @@ class LoginActivity : AppCompatActivity() {
         val email = binding.eetEmail.text.toString()
         val password = binding.petPassword.text.toString()
 
-        if (email.isEmpty()) {
-            binding.eetEmail.error.isNullOrEmpty()
-        } else if (password.isEmpty()) {
-            binding.petPassword.error.isNullOrEmpty()
-        } else {
+        if (!binding.eetEmail.text.isNullOrEmpty() && !binding.petPassword.text.isNullOrEmpty() && password.length >= 8) {
             loginViewModel.loginUser(email, password)
             observeLoginResult()
+        } else {
+            Toast.makeText(this, "Password must be 8 character", Toast.LENGTH_SHORT).show()
+            if (binding.eetEmail.text.isNullOrEmpty()){
+                binding.eetEmail.error = "Email Tidak Boleh Kosong"
+            }
+            if (binding.petPassword.text.isNullOrEmpty()){
+                binding.petPassword.error = "Password must be 8 character"
+            }
         }
     }
 
     private fun observeLoginResult() {
         loginViewModel.loginResult.observe(this) { loginResponse ->
-            if (loginResponse != null) {
+            if (loginResponse?.loginResult != null) {
                 val responseBody = loginResponse.loginResult
                 sharedPref.apply {
                     setBooleanPref(KEY_IS_LOGIN, true)
@@ -82,11 +86,10 @@ class LoginActivity : AppCompatActivity() {
                 i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(i)
 
-                Toast.makeText(this@LoginActivity, loginResponse.message, Toast.LENGTH_SHORT)
-                    .show()
+                showToast()
             } else {
-                Toast.makeText(this@LoginActivity, loginResponse?.message, Toast.LENGTH_SHORT)
-                    .show()
+                showToast()
+
             }
         }
     }
@@ -97,6 +100,12 @@ class LoginActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.VISIBLE
         } else {
             binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun showToast(){
+        loginViewModel.message.observe(this){
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
 

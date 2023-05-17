@@ -1,58 +1,55 @@
 package com.example.storyapp.view.main
 
-import StoryAdapter
-import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storyapp.R
+import com.example.storyapp.adapter.LoadingStateAdapter
+import com.example.storyapp.adapter.StoryAdapter
 
 import com.example.storyapp.databinding.ActivityMainBinding
 import com.example.storyapp.utils.SesionManager
 import com.example.storyapp.view.addstory.AddStoryActivity
+import com.example.storyapp.view.darkmode.DarkModeActivity
 import com.example.storyapp.view.login.LoginActivity
+import com.example.storyapp.view.maps.MapsActivity
 
 class MainActivity : AppCompatActivity() {
 
-
-
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: StoryAdapter
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModels{
+        MainViewModel.ViewModelFactory(this)
+    }
 
-    private lateinit var sharedPref: SesionManager
-    private var token: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPref = SesionManager(this)
-        token = sharedPref.getToken
 
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        val adapter = StoryAdapter()
 
-        binding.rvStories.layoutManager = LinearLayoutManager(this)
-        binding.rvStories.setHasFixedSize(true)
-        adapter = StoryAdapter(this, arrayListOf())
         binding.rvStories.adapter = adapter
+        binding.rvStories.layoutManager = LinearLayoutManager(this)
 
-        viewModel.allStory.observe(this) {
-            adapter.setData(it)
+        binding.rvStories.setHasFixedSize(true)
+
+
+        binding.rvStories.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter{
+                adapter.retry()
+            }
+        )
+
+        viewModel.story.observe(this){
+            adapter.submitData(lifecycle, it)
         }
-
-        viewModel.errorMessage.observe(this){
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-        }
-
-        viewModel.getAllStory("Bearer $token")
 
         binding.btnAdd.setOnClickListener {
             startActivity(
@@ -65,17 +62,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.logout_menu, menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+        when (item.itemId) {
             R.id.logout_menu -> {
                 val alertDialog = AlertDialog.Builder(this)
                 alertDialog.setTitle("Apakah Anda yakin ingin keluar ?")
                     ?.setPositiveButton("Iya") { _, _ ->
-                        sharedPref.clearData()
+                        SesionManager(this).clearData()
                         val intent = Intent(this, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                         startActivity(intent)
@@ -86,11 +83,17 @@ class MainActivity : AppCompatActivity() {
                 alert.show()
                 true
             }
-            else -> return super.onOptionsItemSelected(item)
-        }
-    }
+            R.id.dark_mode_menu -> {
+                val intent = Intent(this, DarkModeActivity::class.java)
+                startActivity(intent)
+            }
 
-    companion object {
-        const val CAMERA_X_RESULT = 200
+            R.id.maps_menu -> {
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+
     }
 }

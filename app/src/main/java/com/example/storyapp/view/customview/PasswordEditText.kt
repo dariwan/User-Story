@@ -38,7 +38,7 @@ class PasswordEditText: AppCompatEditText{
                     password.isEmpty() -> error =
                         context.getString(R.string.password_not_be_empty)
                     password.length < 8 -> error =
-                        context.getString(R.string.password_less_6)
+                        context.getString(R.string.password_less_8)
                 }
             }
 

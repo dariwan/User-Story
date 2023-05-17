@@ -10,7 +10,6 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.example.storyapp.R
 import com.example.storyapp.databinding.ActivityCameraBinding
 import com.example.storyapp.utils.createFile
 import com.example.storyapp.view.addstory.AddStoryActivity
@@ -29,7 +28,7 @@ class CameraActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         binding.switchCamera.setOnClickListener {
-            cameraSelector = if (cameraSelector.equals(CameraSelector.DEFAULT_BACK_CAMERA)) CameraSelector.DEFAULT_FRONT_CAMERA
+            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
             else CameraSelector.DEFAULT_BACK_CAMERA
 
             startCamera()
@@ -101,6 +100,11 @@ class CameraActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startCamera()
     }
 
 }
